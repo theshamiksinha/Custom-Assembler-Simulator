@@ -321,7 +321,7 @@ def error_checker(filename):
                                                         continue
                                                 else:
                                                         li.append(f"Error in line {instruction.index(i) + 1}: int value not defined / int value not in range / register name invalid ")
-                                 elif j[0]=="ld" or j[0]=="st":
+                                elif j[0]=="ld" or j[0]=="st":
                                         t=1
                                         if len(j)!=3:
                                                 li.append(f"Error in Line {instruction.index(i) + 1}: ld and st must contain 2 parameters ")
