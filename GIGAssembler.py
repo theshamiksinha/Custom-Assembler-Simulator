@@ -451,7 +451,6 @@ filename="code.txt"
 stat = 0
 no_line = 0
 mem_addr={}
-errore=open("output.txt","w")
 with open("code.txt", "r") as instructions:
     data = instructions.read().split('\n')
     print(data)
@@ -463,7 +462,7 @@ NE=error_checker(filename)
 print('labellll = ',labellll)
 # print('ne = ',NE)
 for i in range(len(li)):
-        errore.write(str(li[i])+'\n')
+        opfile.write(str(li[i])+'\n')
 if NE == 0 :
         print("abborting")
         quit()
