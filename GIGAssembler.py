@@ -467,3 +467,161 @@ for i in range(len(li)):
 if NE == 0 :
         print("abborting")
         quit()
+
+       
+   
+# FOR VARIABLE DEFINITION
+bk = 0
+for line in data:
+    # if bk == 1:
+    #     break
+    line = line.split(' ')
+    # print("data",line)
+    no_line = no_line + 1
+    stat = stat + 1
+    if line[0] != "var":
+        no_line=no_line-1
+        bk=1
+        break
+    else:
+        mem_addr[line[1]] = binn(len(mem_addr)+1+len(register)+len(labellll), 7)
+for line in data[stat-1:]:
+    print('##### ',line) #######################
+    print(line.split(' ')[0][0:-1] in labellll.values())
+    print(line.split(' ')[0][0:-1],labellll.values())
+    no_line=no_line+1
+    if line.split(' ')[0]=="jmp" or line.split(' ')[0]=="jlt" or line.split(' ')[0]=="jgt" or line.split(' ')[0]=="je":
+        opfile.write(for_label(line.split(' ')[0],line.split(' ')[1])+"\n")
+    elif line.split(' ')[0][0:-1] in labellll.keys():
+        print("vaibhav")
+        ###################################################
+        lin=line.split(': ')[1]
+        print(lin)
+        print('lin = ',lin)
+        if lin == "hlt":
+            opfile.write(typeF() + '\n')
+        elif lin == '':
+            pass
+        else:
+            no_of_rasis = 0
+            resis_l = []
+            imm = -1
+            mem_val_c = 0
+            line_part = lin.split(' ')
+            for instr_split in range(len(line_part)):
+                # print('aa', line_part[instr_split][0])
+                if line_part[instr_split]=="\n":
+                       print(1)
+                       continue
+                elif instr_split == 0:
+                    op = line_part[0]
+                elif line_part[instr_split][0] != '$':
+                    # print(line_part[instr_split])
+                    # print(mem_addr.keys())
+                    # print(line_part[instr_split] in mem_addr.keys())
+                    if line_part[instr_split] in mem_addr.keys():
+
+                        mem_val = line_part[instr_split]
+                        mem_val_c = 1
+                    elif line_part[instr_split] not in register.keys():
+                        print("register value error in line",no_line)
+                        print("A register can be one of R0, R1, ... R6, and FLAGS only ")
+                        print("value given",line_part[instr_split])
+                        NE=1
+                    else:
+                        no_of_rasis = no_of_rasis + 1
+                        resis_l.append(line_part[instr_split])
+                else:
+                    if int(imm) >= 128:
+                        print('RunTimeError immediate value OVERFLOW in line', line, 'column',instr_split)
+                        print('Expected value -1<,128> got value', imm)
+                        NE=1
+                        for a in lin:
+                            print(a, end=' ')
+                        quit()
+                    elif imm == 0:
+                        print('RunTimeError immediate value NEGATIVE in line', line, 'column', instr_split,)
+                        print('Expected value -1<,128> got value', imm)
+                        NE=1
+                        for a in line:
+                            print(a, end=' ')
+                        quit()
+                    imm = line_part[instr_split][1:]
+            if NE == 1:
+                if no_of_rasis == 3:
+                    opfile.write(typeA(op, resis_l) + '\n')
+                elif no_of_rasis == 1 and imm != -1:
+                    if op.replace(" ","") =='mov':
+                        op = "movI"
+                    opfile.write(typeB(op, resis_l, imm) + '\n')
+                elif no_of_rasis == 2:
+                    if op=='mov':
+                        op="movR"
+                    opfile.write(typeC(op, resis_l) + '\n')
+                elif mem_val_c == 1 and no_of_rasis == 1:
+                    opfile.write(typeD(op, resis_l, mem_val) + '\n')
+                elif no_of_rasis == 0 and mem_val_c == 1:
+                    opfile.write(typeE(op, mem_val)+'\n')   
+        ###################################################
+    elif line == "hlt":
+        opfile.write(typeF() + '\n')
+    elif line == '':
+        pass
+    else:
+        no_of_rasis = 0
+        resis_l = []
+        imm = -1
+        mem_val_c = 0
+        line_part = line.split(' ')
+        for instr_split in range(len(line_part)):
+            # print('aa', line_part[instr_split][0])
+
+            if instr_split == 0:
+                op = line_part[0]
+            elif line_part[instr_split][0] != '$':
+                # print(line_part[instr_split])
+                # print(mem_addr.keys())
+                # print(line_part[instr_split] in mem_addr.keys())
+                if line_part[instr_split] in mem_addr.keys():
+
+                    mem_val = line_part[instr_split]
+                    mem_val_c = 1
+                elif line_part[instr_split] not in register.keys():
+                    print("register value error in line",no_line)
+                    print("A register can be one of R0, R1, ... R6, and FLAGS only ")
+                    print("value given",line_part[instr_split])
+                    NE=1
+                else:
+                    no_of_rasis = no_of_rasis + 1
+                    resis_l.append(line_part[instr_split])
+            else:
+                if int(imm) >= 128:
+                    print('RunTimeError immediate value OVERFLOW in line', line, 'column',instr_split)
+                    print('Expected value -1<,128> got value', imm)
+                    NE=1
+                    for a in line:
+                        print(a, end=' ')
+                    quit()
+                elif imm == 0:
+                    print('RunTimeError immediate value NEGATIVE in line', line, 'column', instr_split,)
+                    print('Expected value -1<,128> got value', imm)
+                    NE=1
+                    for a in line:
+                        print(a, end=' ')
+                    quit()
+                imm = line_part[instr_split][1:]
+        if NE == 1:
+            if no_of_rasis == 3:
+                opfile.write(typeA(op, resis_l) + '\n')
+            elif no_of_rasis == 1 and imm != -1:
+                if op.replace(" ","") =='mov':
+                    op = "movI"
+                opfile.write(typeB(op, resis_l, imm) + '\n')
+            elif no_of_rasis == 2:
+                if op=='mov':
+                    op="movR"
+                opfile.write(typeC(op, resis_l) + '\n')
+            elif mem_val_c == 1 and no_of_rasis == 1:
+                opfile.write(typeD(op, resis_l, mem_val) + '\n')
+            elif no_of_rasis == 0 and mem_val_c == 1:
+                opfile.write(typeE(op, mem_val)+'\n')
