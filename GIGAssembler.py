@@ -321,3 +321,149 @@ def error_checker(filename):
                                                         continue
                                                 else:
                                                         li.append(f"Error in line {instruction.index(i) + 1}: int value not defined / int value not in range / register name invalid ")
+                                 elif j[0]=="ld" or j[0]=="st":
+                                        t=1
+                                        if len(j)!=3:
+                                                li.append(f"Error in Line {instruction.index(i) + 1}: ld and st must contain 2 parameters ")
+                                        else:
+                                                if (j[1] in register.keys() and j[1]!="FLAGS" and j[2] in variables):
+                                                        continue
+                                                else:
+                                                        if j[2] not in variables:
+                                                                li.append(f"Error in line {instruction.index(i) + 1}: No variable named '{j[2]}' ")
+                                                        if j[1] not in register.keys():
+                                                                li.append(f"Error in line {instruction.index(i) + 1}: No register named '{j[1]}' ")
+                                
+
+                                elif j[0]=="mul" or j[0]=="div":
+                                        t=1
+                                        if j[0]=="mul":
+                                                if len(j)!=4:
+                                                        li.append(f"Error in Line {instruction.index(i) + 1}: mul must contain 3 parameters ")
+                                                else:
+                                                        if j[1] in register.keys() and j[1]!="FLAGS" and j[2] in register.keys() and j[2]!="FLAGS" and j[3] in register.keys() and j[3]!="FLAGS" :
+                                                                continue
+                                                        else:
+                                                                li.append(f"Error in line {instruction.index(i) + 1}: Registers can only be of type R0/1/2/3/4/5/6")
+                                                        
+                                        elif j[0]=="div":
+                                                if len(j)!=3:
+                                                        li.append(f"Error in Line {instruction.index(i) + 1}: div must contain 3 parameters ")
+                                                else:
+                                                        if len(i)!=3:
+                                                                li.append(f"Error in Line {instruction.index(i) + 1}: div must contain 3 parameters ")
+                                                        else:
+                                                                if j[1] in register.keys() and j[1]!="FLAGS" and j[2] in register.keys() and j[2]!="FLAGS":
+                                                                        continue
+                                                                else:
+                                                                        li.append(f"Error in line {instruction.index(i) + 1}: Registers can only be of type R0/1/2/3/4/5/6")
+                                        
+                                elif j[0]=="rs" or j[0]=="ls":
+                                        t=1
+                                        # print(1)
+                                        if len(j)!=3:
+                                                li.append(f"Error in Line {instruction.index(i) + 1}: rs / ls must contain 2 parameters ")
+                                        else:
+                                                # print(j[2])
+                                                if j[1] in register.keys() and j[1]!="FLAGS" and (0 <= int(j[2][1::]) and int(j[2][1::]) <= 127) :
+                                                        continue
+                                                else:
+                                                        li.append(f"Error in line {instruction.index(i) + 1}: Registers name not valid / int not in range")
+
+
+                                elif j[0]=="xor" or j[0]=="or" or j[0]=="and":
+                                        t=1
+                                        if len(j)!=4:
+                                                li.append(f"Error in Line {instruction.index(i) + 1}: xor/or/and must contain 3 parameters ")
+                                        else:
+                                                if j[1] in register.keys() and j[1]!="FLAGS" and j[2] in register.keys() and j[2]!="FLAGS" and j[3] in register.keys() and j[3]!="FLAGS":
+                                                        continue
+                                                else:
+                                                        li.append(f"Error in line {instruction.index(i) + 1}: Registers can only be of type R0/1/2/3/4/5/6")
+
+                                elif j[0]=="not" or j[0]=="cmp":
+                                        t=1
+                                        if len(j)!=3:
+                                                li.append(f"Error in Line {instruction.index(i) + 1}: not / cmp must contain 2 parameters ")
+                                        else:
+                                                if j[1] in register.keys() and j[1]!="FLAGS" and j[2] in register.keys() and j[2]!="FLAGS" :
+                                                        continue
+                                                else:
+                                                        li.append(f"Error in line {instruction.index(i) + 1}: Registers can only be of type R0/1/2/3/4/5/6")
+
+                                elif j[0]=="jmp" or j[0]=="jlt" or j[0]=="jgt" or j[0]=="je":
+                                        t=1
+                                        if len(j)!=2:
+                                                li.append(f"Error in Line {instruction.index(i) + 1}: jump statements must contain 1 label ")
+                                        else:
+                                                labels.append(j[1])
+                                elif j[0]=="hlt":
+                                        t=1
+                                        if len(j)!=1:
+                                                li.append(f"Error in Line {instruction.index(i) + 1}: only hlt must be there and no additional statements")
+                                
+
+                                elif j[0][:-1] not in labels:
+                                        t=1
+                                        li.append(f"Error in line {instruction.index(i) + 1}: Invalid Operand; '{''.join(i)}' ")
+                                continue
+
+
+                elif i[0]=="hlt":
+                        t=1
+                        if len(i)!=1:
+                                li.append(f"Error in Line {instruction.index(i) + 1}: only hlt must be there and no additional statements")
+                
+
+                elif i[0][:-1] not in labels:
+                        t=1
+                        li.append(f"Error in line {instruction.index(i) + 1}: Invalid Operand; '{''.join(i)}' ")
+
+        r=0
+        s=0
+        # instruction=[q for q in instruction if q!=" "]
+        print(instruction)
+        for u in instruction:
+               if "hlt" in u:
+                      r+=1
+                      if instruction[-1]==u:
+                             s+=1
+        
+        if ["hlt"] not in instruction and r==0:
+                li.append(f"Error : No hlt instruction present ")
+        elif instruction[-1]!=["hlt"] and s==0:
+                li.append(f"Error : Halt must be the last instruction/ cannot execute after halt")
+              
+                                        
+
+
+        if len(li)==0:
+            NE=1
+        else:
+            NE=0
+
+        return NE
+
+
+
+opfile = open("output.txt", "w")
+filename="code.txt"
+stat = 0
+no_line = 0
+mem_addr={}
+errore=open("output.txt","w")
+with open("code.txt", "r") as instructions:
+    data = instructions.read().split('\n')
+    print(data)
+        # list of instructions split by new line
+li=[]
+NE=error_checker(filename)
+#print(li)
+
+print('labellll = ',labellll)
+# print('ne = ',NE)
+for i in range(len(li)):
+        errore.write(str(li[i])+'\n')
+if NE == 0 :
+        print("abborting")
+        quit()
