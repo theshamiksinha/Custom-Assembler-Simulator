@@ -50,7 +50,7 @@ def typeB(op,reg,Imm):
     s+=register[reg[0]]
     s1=bin(int(Imm))
     s1=s1[2::]
-    print(s1)
+    #print(s1)
     t=7-len(s1)
     s2=""
     if t==6:
@@ -87,15 +87,14 @@ def for_label(op,lab):
 
 
 labellll={}
-def error_checker(filename):
-        with open(filename, 'r') as f:
-            lines = f.readlines()
+def error_checker(lines):
+        
         instruction=[]
-        listofline=enumerate(instruction,1)
+        # listofline=enumerate(instruction,1)
         for line in (lines):
                 line = line.strip().split()
                 instruction.append(line)
-        #print(instruction)
+        ##print(instruction)
 
         opcodes=["add","sub","mov","ld","st","mul", "div","rs","ls","xor","or","and","not","cmp","jmp","jlt","jgt","je","hlt","var"]
 
@@ -115,15 +114,15 @@ def error_checker(filename):
         t=0
         instruction=[q for q in instruction if q!=""]
         for i in instruction:
-                print(len(i)==0)
-                # print(i[0][-1]==":")
+                #print(len(i)==0)
+                # #print(i[0][-1]==":")
                 if len(i) != 0 and i[0][-1] == ":":
-                        print("in side")
+                        #print("in side")
                         if i[0][:-1] in labellll.keys():
                                 li.append("two label with same name")
-                                print("two label with same name")
+                                #print("two label with same name")
                         else:
-                                print("in in side")
+                                #print("in in side")
                                 labellll[i[0][0:-1]]=binn(instruction.index(i)-len(variables),7)
                 if len(i)==0:
                     # pass
@@ -169,11 +168,12 @@ def error_checker(filename):
                                                continue
                                         
                                 else:
-                                        if (i[1] in register.keys() and i[1]!="FLAGS" and (0 <= int(i[2][1:]) and int(i[2][1:]) <= 127) and i[2][0]=="$"):
+                                        if (i[1] in register.keys() and i[1]!="FLAGS" and (0 <= int(i[2][1:]) and int(i[2][1:]) <= 127)):
                                                 continue
                                         else:
                                                 li.append(f"Error in line {instruction.index(i) + 1}: int value not defined / int value not in range / register name invalid ")
-                                                
+                                                # continue
+
 
                 elif i[0]=="ld" or i[0]=="st":
                         t=1
@@ -211,11 +211,11 @@ def error_checker(filename):
                 
                 elif i[0]=="rs" or i[0]=="ls":
                         t=1
-                        # print(1)
+                        # #print(1)
                         if len(i)!=3:
                                 li.append(f"Error in Line {instruction.index(i) + 1}: rs / ls must contain 2 parameters ")
                         else:
-                                # print(i[2])
+                                # #print(i[2])
                                 if i[1] in register.keys() and i[1]!="FLAGS" and (0 <= int(i[2][1::]) and int(i[2][1::]) <= 127) :
                                         continue
                                 else:
@@ -272,9 +272,9 @@ def error_checker(filename):
                                         
                                         if j[0][:-1] in labellll.keys():
                                                 li.append("two label with same name")
-                                                print("two label with same name")
+                                                #print("two label with same name")
                                         else:
-                                                print("in in side")
+                                                #print("in in side")
                                                 labellll[j[0][0:-1]]=binn(instruction.index(i)-len(variables),7)
                                 if len(j)==0:
                                 # pass
@@ -360,11 +360,11 @@ def error_checker(filename):
                                         
                                 elif j[0]=="rs" or j[0]=="ls":
                                         t=1
-                                        # print(1)
+                                        # #print(1)
                                         if len(j)!=3:
                                                 li.append(f"Error in Line {instruction.index(i) + 1}: rs / ls must contain 2 parameters ")
                                         else:
-                                                # print(j[2])
+                                                # #print(j[2])
                                                 if j[1] in register.keys() and j[1]!="FLAGS" and (0 <= int(j[2][1::]) and int(j[2][1::]) <= 127) :
                                                         continue
                                                 else:
@@ -422,7 +422,7 @@ def error_checker(filename):
         r=0
         s=0
         # instruction=[q for q in instruction if q!=" "]
-        print(instruction)
+        #print(instruction)
         for u in instruction:
                if "hlt" in u:
                       r+=1
@@ -445,26 +445,35 @@ def error_checker(filename):
         return NE
 
 
-
-opfile = open("output.txt", "w")
-filename="code.txt"
+##print()
+# opfile = open("output.txt", "w")
+# filename="code.txt"
 stat = 0
 no_line = 0
 mem_addr={}
-with open("code.txt", "r") as instructions:
-    data = instructions.read().split('\n')
-    print(data)
+data=[]
+while (True):
+        try:
+                w=input().strip()
+                data.append(w)
+                
+        except EOFError:
+                break
+       
+# with open("code.txt", "r") as instructions:
+#     data = instructions.read().split('\n')
+    ##print(data)
         # list of instructions split by new line
 li=[]
-NE=error_checker(filename)
-#print(li)
+NE=error_checker(data)
+###print(li)
 
-print('labellll = ',labellll)
-# print('ne = ',NE)
+##print('labellll = ',labellll)
+# ##print('ne = ',NE)
 for i in range(len(li)):
-        opfile.write(str(li[i])+'\n')
+        print(str(li[i])+'\n')
 if NE == 0 :
-        print("abborting")
+        ##print("abborting")
         quit()
 
        
@@ -475,7 +484,7 @@ for line in data:
     # if bk == 1:
     #     break
     line = line.split(' ')
-    # print("data",line)
+    # ##print("data",line)
     no_line = no_line + 1
     stat = stat + 1
     if line[0] != "var":
@@ -484,21 +493,23 @@ for line in data:
         break
     else:
         mem_addr[line[1]] = binn(len(mem_addr)+1+len(register)+len(labellll), 7)
+for a in mem_addr.keys():
+       mem_addr[a]=binn(list(mem_addr.keys()).index(a)+1+len(data)-stat,7)
 for line in data[stat-1:]:
-    print('##### ',line) #######################
-    print(line.split(' ')[0][0:-1] in labellll.values())
-    print(line.split(' ')[0][0:-1],labellll.values())
+    ##print('##### ',line) #######################
+    ##print(line.split(' ')[0][0:-1] in labellll.values())
+    ##print(line.split(' ')[0][0:-1],labellll.values())
     no_line=no_line+1
     if line.split(' ')[0]=="jmp" or line.split(' ')[0]=="jlt" or line.split(' ')[0]=="jgt" or line.split(' ')[0]=="je":
-        opfile.write(for_label(line.split(' ')[0],line.split(' ')[1])+"\n")
+        print(for_label(line.split(' ')[0],line.split(' ')[1])+"\n")
     elif line.split(' ')[0][0:-1] in labellll.keys():
-        print("vaibhav")
+        #print("vaibhav")
         ###################################################
         lin=line.split(': ')[1]
-        print(lin)
-        print('lin = ',lin)
+        #print(lin)
+        #print('lin = ',lin)
         if lin == "hlt":
-            opfile.write(typeF() + '\n')
+            print(typeF() + '\n')
         elif lin == '':
             pass
         else:
@@ -508,62 +519,62 @@ for line in data[stat-1:]:
             mem_val_c = 0
             line_part = lin.split(' ')
             for instr_split in range(len(line_part)):
-                # print('aa', line_part[instr_split][0])
+                # #print('aa', line_part[instr_split][0])
                 if line_part[instr_split]=="\n":
-                       print(1)
+                       #print(1)
                        continue
                 elif instr_split == 0:
                     op = line_part[0]
                 elif line_part[instr_split][0] != '$':
-                    # print(line_part[instr_split])
-                    # print(mem_addr.keys())
-                    # print(line_part[instr_split] in mem_addr.keys())
+                    # #print(line_part[instr_split])
+                    # #print(mem_addr.keys())
+                    # #print(line_part[instr_split] in mem_addr.keys())
                     if line_part[instr_split] in mem_addr.keys():
 
                         mem_val = line_part[instr_split]
                         mem_val_c = 1
                     elif line_part[instr_split] not in register.keys():
-                        print("register value error in line",no_line)
-                        print("A register can be one of R0, R1, ... R6, and FLAGS only ")
-                        print("value given",line_part[instr_split])
+                        #print("register value error in line",no_line)
+                        #print("A register can be one of R0, R1, ... R6, and FLAGS only ")
+                        #print("value given",line_part[instr_split])
                         NE=1
                     else:
                         no_of_rasis = no_of_rasis + 1
                         resis_l.append(line_part[instr_split])
                 else:
                     if int(imm) >= 128:
-                        print('RunTimeError immediate value OVERFLOW in line', line, 'column',instr_split)
-                        print('Expected value -1<,128> got value', imm)
+                        #print('RunTimeError immediate value OVERFLOW in line', line, 'column',instr_split)
+                        #print('Expected value -1<,128> got value', imm)
                         NE=1
                         for a in lin:
-                            print(a, end=' ')
-                        quit()
+                            #print(a, end=' ')
+                                quit()
                     elif imm == 0:
-                        print('RunTimeError immediate value NEGATIVE in line', line, 'column', instr_split,)
-                        print('Expected value -1<,128> got value', imm)
+                        #print('RunTimeError immediate value NEGATIVE in line', line, 'column', instr_split,)
+                        #print('Expected value -1<,128> got value', imm)
                         NE=1
                         for a in line:
-                            print(a, end=' ')
-                        quit()
+                            #print(a, end=' ')
+                                quit()
                     imm = line_part[instr_split][1:]
             if NE == 1:
                 if no_of_rasis == 3:
-                    opfile.write(typeA(op, resis_l) + '\n')
+                    print(typeA(op, resis_l) + '\n')
                 elif no_of_rasis == 1 and imm != -1:
                     if op.replace(" ","") =='mov':
                         op = "movI"
-                    opfile.write(typeB(op, resis_l, imm) + '\n')
+                    print(typeB(op, resis_l, imm) + '\n')
                 elif no_of_rasis == 2:
                     if op=='mov':
                         op="movR"
-                    opfile.write(typeC(op, resis_l) + '\n')
+                    print(typeC(op, resis_l) + '\n')
                 elif mem_val_c == 1 and no_of_rasis == 1:
-                    opfile.write(typeD(op, resis_l, mem_val) + '\n')
+                    print(typeD(op, resis_l, mem_val) + '\n')
                 elif no_of_rasis == 0 and mem_val_c == 1:
-                    opfile.write(typeE(op, mem_val)+'\n')   
+                    print(typeE(op, mem_val)+'\n')   
         ###################################################
     elif line == "hlt":
-        opfile.write(typeF() + '\n')
+        print(typeF() + '\n')
     elif line == '':
         pass
     else:
@@ -573,54 +584,56 @@ for line in data[stat-1:]:
         mem_val_c = 0
         line_part = line.split(' ')
         for instr_split in range(len(line_part)):
-            # print('aa', line_part[instr_split][0])
+            # #print('aa', line_part[instr_split][0])
 
             if instr_split == 0:
                 op = line_part[0]
             elif line_part[instr_split][0] != '$':
-                # print(line_part[instr_split])
-                # print(mem_addr.keys())
-                # print(line_part[instr_split] in mem_addr.keys())
+                # #print(line_part[instr_split])
+                # #print(mem_addr.keys())
+                # #print(line_part[instr_split] in mem_addr.keys())
                 if line_part[instr_split] in mem_addr.keys():
 
                     mem_val = line_part[instr_split]
                     mem_val_c = 1
                 elif line_part[instr_split] not in register.keys():
-                    print("register value error in line",no_line)
-                    print("A register can be one of R0, R1, ... R6, and FLAGS only ")
-                    print("value given",line_part[instr_split])
+                    #print("register value error in line",no_line)
+                    #print("A register can be one of R0, R1, ... R6, and FLAGS only ")
+                    #print("value given",line_part[instr_split])
                     NE=1
                 else:
                     no_of_rasis = no_of_rasis + 1
                     resis_l.append(line_part[instr_split])
             else:
                 if int(imm) >= 128:
-                    print('RunTimeError immediate value OVERFLOW in line', line, 'column',instr_split)
-                    print('Expected value -1<,128> got value', imm)
+                    #print('RunTimeError immediate value OVERFLOW in line', line, 'column',instr_split)
+                    #print('Expected value -1<,128> got value', imm)
                     NE=1
                     for a in line:
-                        print(a, end=' ')
-                    quit()
+                        #print(a, end=' ')
+                        quit()
                 elif imm == 0:
-                    print('RunTimeError immediate value NEGATIVE in line', line, 'column', instr_split,)
-                    print('Expected value -1<,128> got value', imm)
+                    #print('RunTimeError immediate value NEGATIVE in line', line, 'column', instr_split,)
+                    #print('Expected value -1<,128> got value', imm)
                     NE=1
                     for a in line:
-                        print(a, end=' ')
-                    quit()
+                        #print(a, end=' ')
+                        quit()
                 imm = line_part[instr_split][1:]
         if NE == 1:
             if no_of_rasis == 3:
-                opfile.write(typeA(op, resis_l) + '\n')
+                print(typeA(op, resis_l) + '\n')
             elif no_of_rasis == 1 and imm != -1:
                 if op.replace(" ","") =='mov':
                     op = "movI"
-                opfile.write(typeB(op, resis_l, imm) + '\n')
+                print(typeB(op, resis_l, imm) + '\n')
             elif no_of_rasis == 2:
                 if op=='mov':
                     op="movR"
-                opfile.write(typeC(op, resis_l) + '\n')
+                print(typeC(op, resis_l) + '\n')
             elif mem_val_c == 1 and no_of_rasis == 1:
-                opfile.write(typeD(op, resis_l, mem_val) + '\n')
+                print(typeD(op, resis_l, mem_val) + '\n')
             elif no_of_rasis == 0 and mem_val_c == 1:
-                opfile.write(typeE(op, mem_val)+'\n')
+                print(typeE(op, mem_val)+'\n')
+
+#output
