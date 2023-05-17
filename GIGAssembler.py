@@ -523,6 +523,8 @@ for line in data[stat-1:]:
                 if line_part[instr_split]=="\n":
                        #print(1)
                        continue
+                elif line_part[instr_split]=='':
+                    pass
                 elif instr_split == 0:
                     op = line_part[0]
                 elif line_part[instr_split][0] != '$':
@@ -585,8 +587,9 @@ for line in data[stat-1:]:
         line_part = line.split(' ')
         for instr_split in range(len(line_part)):
             # #print('aa', line_part[instr_split][0])
-
-            if instr_split == 0:
+            if line_part[instr_split]=='':#########################################################
+                pass
+            elif instr_split == 0:##################################################################
                 op = line_part[0]
             elif line_part[instr_split][0] != '$':
                 # #print(line_part[instr_split])
