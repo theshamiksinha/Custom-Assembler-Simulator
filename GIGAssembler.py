@@ -518,7 +518,6 @@ for line in data[stat-1:]:
             imm = -1
             mem_val_c = 0
             line_part = lin.split(' ')
-            line_part = [x for x in line_part if x != '']##############################################
             for instr_split in range(len(line_part)):
                 # #print('aa', line_part[instr_split][0])
                 if line_part[instr_split]=="\n":
@@ -584,10 +583,10 @@ for line in data[stat-1:]:
         imm = -1
         mem_val_c = 0
         line_part = line.split(' ')
-        line_part = [x for x in line_part if x != '']
         for instr_split in range(len(line_part)):
-            # #print('aa', line_part[instr_split][0]
-            if instr_split == 0:##################################################################
+            # #print('aa', line_part[instr_split][0])
+
+            if instr_split == 0:
                 op = line_part[0]
             elif line_part[instr_split][0] != '$':
                 # #print(line_part[instr_split])
