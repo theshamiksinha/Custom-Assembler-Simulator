@@ -2,7 +2,12 @@ opcode={"add":"00000","sub":"00001","movI":"00010","movR":"00011","ld":"00100","
 
 
 register = {"R0":"000","R1":"001","R2":"010","R3":"011","R4":"100","R5":"101","R6":"110","FLAGS":"111"}
-
+def isfloat(num):
+    try:
+        float(num)
+        return False
+    except ValueError:
+        return True
 
 def typeF():#halt
     return "1101000000000000"
@@ -139,7 +144,7 @@ def error_checker(lines):
                                        variables.append(i[1])
                                        continue
 
-                elif i[0]=="add" or i[0]=="sub":
+                elif i[0]=="add" or i[0]=="sub" or i[0]=="addf" or i[0]=="subf":
                         t=1
                         if len(i)!=4:
                                 li.append(f"Error in Line {instruction.index(i) + 1}: add must contain 3 parameters ")
@@ -154,6 +159,13 @@ def error_checker(lines):
 
                                 else:
                                         li.append(f"Error in line {instruction.index(i) + 1}: A register can only be of type R0/1/2/3/4/5/6")
+                elif i[0]=="movf":
+                    if len(i)!=3:
+                        li.append(f"Error in Line {instruction.index(i) + 1}: mov must contain 2 parameters ")
+                        
+                    if isfloat(i[2][1::]):
+                        li.append(f"Error in Line {instruction.index(i) + 1}: movf dose not have flot value")
+                        
                 elif i[0]=="mov":
                         t=1
                         if len(i)!=3:
