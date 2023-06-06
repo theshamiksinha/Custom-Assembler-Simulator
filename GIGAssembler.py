@@ -2,6 +2,46 @@ opcode={"add":"00000","sub":"00001","movI":"00010","movR":"00011","ld":"00100","
 
 
 register = {"R0":"000","R1":"001","R2":"010","R3":"011","R4":"100","R5":"101","R6":"110","FLAGS":"111"}
+def manti(number):
+    # Handle special cases: 0 and NaN (Not a Number)
+    if number == 0:
+        return '0' * 8
+
+    if number != number:  # Check if number is NaN
+        return '' + '0' * 8
+
+    # Determine the sign bit (always 0 for positive numbers)
+    sign_bit = ''
+
+    # Convert the absolute value of the number to binary
+    absolute_value = abs(number)
+    binary = bin(int(absolute_value))[2:]
+
+    # Split the binary representation into integer and decimal parts
+    integer_part, _, decimal_part = binary.partition('.')
+
+    # Calculate the exponent value
+    exponent = len(integer_part) - 1
+
+    # Trim or pad the mantissa to 5 bits
+    mantissa = (integer_part[1:] + decimal_part)[:5].ljust(5, '0')
+
+    # Convert the exponent to binary with 3 bits
+    exponent_bits = bin(exponent + 3)[2:].rjust(3, '0')
+
+    # Combine the components and return the binary float representation
+    binary_float = sign_bit + exponent_bits + mantissa
+
+    return binary_float
+
+
+# Example usage
+decimal_number = 12.375  # Example decimal float number
+binary_representation = decimal_to_binary_float(decimal_number)
+print(binary_representation)
+
+
+
 def isfloat(num):
     try:
         float(num)
@@ -53,8 +93,11 @@ def typeB(op,reg,Imm):
     s+=opcode[op]
     s+="0"
     s+=register[reg[0]]
-    s1=bin(int(Imm))
-    s1=s1[2::]
+    if op=="mov":
+        s1=bin(int(Imm))
+        s1=s1[2::]
+    else :
+        si=str(manti(int(Imm)))
     #print(s1)
     t=7-len(s1)
     s2=""
