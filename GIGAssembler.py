@@ -483,7 +483,7 @@ bk = 0
 for line in data:
     # if bk == 1:
     #     break
-    line = line.split(' ')
+    line = line.split()
     # ##print("data",line)
     no_line = no_line + 1
     stat = stat + 1
@@ -497,18 +497,18 @@ for a in mem_addr.keys():
        mem_addr[a]=binn(list(mem_addr.keys()).index(a)+1+len(data)-stat,7)
 for line in data[stat-1:]:
     ##print('##### ',line) #######################
-    ##print(line.split(' ')[0][0:-1] in labellll.values())
-    ##print(line.split(' ')[0][0:-1],labellll.values())
+    ##print(line.split()[0][0:-1] in labellll.values())
+    ##print(line.split()[0][0:-1],labellll.values())
     no_line=no_line+1
-    if line.split(' ')[0]=="jmp" or line.split(' ')[0]=="jlt" or line.split(' ')[0]=="jgt" or line.split(' ')[0]=="je":
-        print(for_label(line.split(' ')[0],line.split(' ')[1])+"\n")
-    elif line.split(' ')[0][0:-1] in labellll.keys():
+    if line.split()[0]=="jmp" or line.split()[0]=="jlt" or line.split()[0]=="jgt" or line.split()[0]=="je":
+        print(for_label(line.split()[0],line.split()[1])+"\n")
+    elif line.split()[0][0:-1] in labellll.keys():
         #print("vaibhav")
         ###################################################
-        lin=line.split(': ')[1]
+        lin=line.split(':')[1]
         #print(lin)
         #print('lin = ',lin)
-        if lin == "hlt":
+        if lin == "hlt" or lin.split()[-1]=="hlt":
             print(typeF() + '\n')
         elif lin == '':
             pass
@@ -517,7 +517,7 @@ for line in data[stat-1:]:
             resis_l = []
             imm = -1
             mem_val_c = 0
-            line_part = lin.split(' ')
+            line_part = lin.split()
             for instr_split in range(len(line_part)):
                 # #print('aa', line_part[instr_split][0])
                 if line_part[instr_split]=="\n":
@@ -582,7 +582,7 @@ for line in data[stat-1:]:
         resis_l = []
         imm = -1
         mem_val_c = 0
-        line_part = line.split(' ')
+        line_part = line.split()
         for instr_split in range(len(line_part)):
             # #print('aa', line_part[instr_split][0])
 
@@ -614,7 +614,7 @@ for line in data[stat-1:]:
                         quit()
                 elif imm == 0:
                     #print('RunTimeError immediate value NEGATIVE in line', line, 'column', instr_split,)
-                    #print('Expected value -1<,128> got value', imm)
+                    
                     NE=1
                     for a in line:
                         #print(a, end=' ')
