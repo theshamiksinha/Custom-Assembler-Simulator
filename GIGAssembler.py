@@ -164,7 +164,7 @@ def error_checker(lines):
                         li.append(f"Error in Line {instruction.index(i) + 1}: mov must contain 2 parameters ")
                         
                     if isfloat(i[2][1::]):
-                        li.append(f"Error in Line {instruction.index(i) + 1}: movf dose not have flot value")
+                        li.append(f"Error in Line {instruction.index(i) + 1}: movf dose not have float value")
                         
                 elif i[0]=="mov":
                         t=1
