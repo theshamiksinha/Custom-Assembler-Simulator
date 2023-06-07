@@ -532,7 +532,7 @@ while (True):
                 
         except EOFError:
                 break
-       
+data=[d for d in data if d!=""]
 # with open("code.txt", "r") as instructions:
 #     data = instructions.read().split('\n')
     ##print(data)
@@ -710,4 +710,3 @@ for line in data[stat-1:]:
                 print(typeE(op, mem_val)+'\n')
 
 #output
-
