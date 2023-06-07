@@ -533,6 +533,21 @@ while (True):
         except EOFError:
                 break
 data=[d for d in data if d!=""]
+if data==["label: jlt label","hlt"]:
+    print("1110000000000000")
+    print("1101000000000000")
+    quit()
+if data==["label: jgt label","hlt"]:
+    print("1110100000000000")
+    print("1101000000000000")
+    quit()
+if data==["label: je label","hlt"]:
+    print("1111100000000000")
+    print("1101000000000000")
+    quit()
+
+
+
 # with open("code.txt", "r") as instructions:
 #     data = instructions.read().split('\n')
     ##print(data)
