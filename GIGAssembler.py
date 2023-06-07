@@ -35,13 +35,6 @@ def manti(number):
     return binary_float
 
 
-# Example usage
-decimal_number = 12.375  # Example decimal float number
-binary_representation = decimal_to_binary_float(decimal_number)
-print(binary_representation)
-
-
-
 def isfloat(num):
     try:
         float(num)
