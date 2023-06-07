@@ -2,37 +2,62 @@ opcode={"add":"00000","sub":"00001","movI":"00010","movR":"00011","ld":"00100","
 
 
 register = {"R0":"000","R1":"001","R2":"010","R3":"011","R4":"100","R5":"101","R6":"110","FLAGS":"111"}
-def manti(number):
-    # Handle special cases: 0 and NaN (Not a Number)
-    if number == 0:
-        return '0' * 8
+k=0
+def move_decimal_left(decimal_str, n):
+    # Remove the decimal point from the string
+    ind=decimal_str.index(".")
+    # print(ind)
+    n=ind-n
+    global k
+    # print(n)
+    k=n
+    decimal_str = decimal_str.replace('.', '')
 
-    if number != number:  # Check if number is NaN
-        return '' + '0' * 8
+    # Insert the decimal point n places from the left
+    shifted_decimal_str = decimal_str[:n] + '.' + decimal_str[n:]
 
-    # Determine the sign bit (always 0 for positive numbers)
-    sign_bit = ''
+    return shifted_decimal_str
 
-    # Convert the absolute value of the number to binary
-    absolute_value = abs(number)
-    binary = bin(int(absolute_value))[2:]
+def manti(decimal_num):
+    # Convert the whole number part to binary
+    whole_number = int(decimal_num)
+    # print(whole_number)
+    binary_whole = bin(whole_number)[2:]  # Remove the '0b' prefix
+    print(binary_whole)
+    # Convert the fractional part to binary
+    fractional_part = decimal_num - whole_number
+    binary_fractional = ''
+    while fractional_part != 0:
+        fractional_part *= 2
+        bit = int(fractional_part)
+        binary_fractional += str(bit)
+        fractional_part -= bit
+    # print(fractional_part)
+    # Normalize the binary fraction
+    binary = binary_whole + '.' + binary_fractional
+    binary_normalized = binary.lstrip('0')
+    print(binary_normalized)
+    # Determine the exponent
+    shifted_places = len(binary_whole) - 1
+    print(shifted_places)
+    exponent = shifted_places + 3  # Adjusted exponent with bias of 3
 
-    # Split the binary representation into integer and decimal parts
-    integer_part, _, decimal_part = binary.partition('.')
+    # Convert the exponent to binary
+    binary_exponent = bin(exponent)[2:].zfill(3)
+    # print(binary_exponent)
+    # Extract the mantissa
+    # print(binary_normalized)
+    binary_normalized=move_decimal_left(binary_normalized,shifted_places)
+    # print(binary_normalized)
+    # print(binary_normalized.replace('.', ''))
+    # print(binary_normalized)
+    # print(k)
+    mantissa = binary_normalized[k+1::]
+    # print(mantissa)
+    # Combine the parts
+    binary_representation = binary_exponent + mantissa
 
-    # Calculate the exponent value
-    exponent = len(integer_part) - 1
-
-    # Trim or pad the mantissa to 5 bits
-    mantissa = (integer_part[1:] + decimal_part)[:5].ljust(5, '0')
-
-    # Convert the exponent to binary with 3 bits
-    exponent_bits = bin(exponent + 3)[2:].rjust(3, '0')
-
-    # Combine the components and return the binary float representation
-    binary_float = sign_bit + exponent_bits + mantissa
-
-    return binary_float
+    return binary_representation
 
 
 def isfloat(num):
