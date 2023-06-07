@@ -111,11 +111,11 @@ def typeB(op,reg,Imm):
     s+=opcode[op]
     s+="0"
     s+=register[reg[0]]
-    if op=="mov":
-        s1=bin(int(Imm))
-        s1=s1[2::]
+    if op=="movf":
+        s1=str(manti(int(Imm)))
     else :
-        si=str(manti(int(Imm)))
+        s1=bin(int(Imm))
+        s1=s1[2::]   
     #print(s1)
     t=7-len(s1)
     s2=""
@@ -710,3 +710,4 @@ for line in data[stat-1:]:
                 print(typeE(op, mem_val)+'\n')
 
 #output
+
