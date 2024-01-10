@@ -1,4 +1,7 @@
 # GIGAssembler and simulator
+The project involves creating an assembler that translates assembly code into machine code (binary) for a specific architecture. The assembler parses the assembly instructions, converts them into their corresponding binary representations, and generates a binary executable file.
+
+Once the binary file is generated, a simulator is implemented to emulate the behavior of the target architecture. The simulator reads and interprets the binary instructions, simulating the execution of the program. It emulates the processor's state, including registers, memory, and flags, to execute the binary instructions sequentially.
 ##  Instruction Set Architecture (IAS)
 | Instruction  | Description                                | Mnemonic | Type|
 |--------------|--------------------------------------------|----------|-----|
